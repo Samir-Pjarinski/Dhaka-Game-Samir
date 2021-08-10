@@ -18,6 +18,7 @@ export var speed = 250
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	T_P.current = true
 
 func _physics_process(delta):
 	direction=Vector3(0,0,0)
