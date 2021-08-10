@@ -13,7 +13,7 @@ var mouse = 0.09
 var current_cam
 
 export var health = 20
-export var max_health = 20
+export var max_health = 200
 export var speed = 250
 
 func _ready():
