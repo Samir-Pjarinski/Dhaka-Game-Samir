@@ -14,9 +14,9 @@ _global_script_class_icons={
 
 [application]
 
-config/name="3D Unsolved"
+config/name="3D Unsolved GitHub"
 run/main_scene="res://Level 1.tscn"
-config/icon="res://icon.png"
+config/icon="res://dhaka_game_studio_logo.png"
 
 [input]
 
