@@ -25,6 +25,7 @@ var target
 export(PackedScene) var Bullet
 export var muzzle_speed = 10
 export var millis_between_shots = 1000
+export var health = 20
 export var TURN_SPEED = 2 
 
 func _ready():
@@ -55,6 +56,10 @@ func _process(delta):
 			eyes.look_at(player.global_transform.origin, Vector3.UP)
 			rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
 
+			if health == 0:
+				print("enemy died")
+				queue_free()
+
 ## without site range
 #	if path.size() < 8:
 #		if current_node < path.size():
@@ -73,6 +78,10 @@ func _process(delta):
 #
 #			eyes.look_at(player.global_transform.origin, Vector3.UP)
 #			rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
+
+#			if health == 0:
+#				print("enemy died")
+#				queue_free()
 
 func update_path(target_point):
 	path = nav.get_simple_path(global_transform.origin, target_point)
@@ -93,13 +102,13 @@ func shoot(loc):
 		can_shoot = false
 		rof_timer.start()
 		gun.ap.play("shoot")
-#func target():
-#	raycast.global_transform = global_transform.origin
 
+func minus_health(damage):
+	health = health - damage
+#	print(health)
 
 func _on_Timer2_timeout():
 	can_shoot = true
-
 
 func _on_Sight_Range_body_entered(body):
 	if body.is_in_group("Player"):

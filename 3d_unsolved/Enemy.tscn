@@ -11,7 +11,8 @@ mid_height = 3.0
 albedo_color = Color( 0, 1, 0.203922, 1 )
 
 [sub_resource type="CapsuleShape" id=3]
-height = 2.90703
+radius = 1.03919
+height = 3.0953
 
 [sub_resource type="CubeMesh" id=4]
 
@@ -21,7 +22,9 @@ albedo_color = Color( 0, 0, 0, 1 )
 [sub_resource type="SphereShape" id=6]
 radius = 70.0
 
-[node name="Enemy" type="KinematicBody"]
+[node name="Enemy" type="KinematicBody" groups=[
+"Enemy",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.37292, 0 )
 script = ExtResource( 1 )
 Bullet = ExtResource( 2 )
