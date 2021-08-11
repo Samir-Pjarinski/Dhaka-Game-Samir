@@ -1,95 +1,59 @@
 extends KinematicBody
 
-onready var animations = $character/AnimationTree.get("parameters/playback")
-onready var T_P = $T_P
-onready var F_P = $F_P
-onready var F_T_P = $F_T_P
-onready var progress_bar = $ProgressBar
+## Todo-
+## Add player projectiles - no gun
 
-var direction=Vector3()
-var velocity = Vector3()
-var gravity = 9.8
+onready var animations = $character/AnimationTree.get("parameters/playback")
+onready var progress_bar = $ProgressBar
+onready var mesh = $character
+
+var direction = Vector3.FORWARD
+var velocity = Vector3.ZERO
+var y_velocity = 0
+var gravity = 20
 var mouse = 0.09
 var current_cam
+var angular_acceleration = 7
+var acceleration = 10
 
 export var health = 20
 export var max_health = 20
-export var speed = 250
+export var speed = 3
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	T_P.current = true
 
 func _physics_process(delta):
-	direction=Vector3(0,0,0)
-	
-	if Input.is_key_pressed(KEY_A):
-		direction.x+=1
+	if Input.is_action_pressed("forwards") or Input.is_action_pressed("backwards") or Input.is_action_pressed("left") or Input.is_action_pressed("right"):
+		var camera_rotation = $camera_root/camera_h.global_transform.basis.get_euler().y
+		direction = Vector3(Input.get_action_strength("left") - Input.get_action_strength("right"),
+					0,
+					Input.get_action_strength("forwards") - Input.get_action_strength("backwards")).rotated(Vector3.UP,camera_rotation)
+		direction = direction.normalized()
 		animations.travel("Walk")
-	elif Input.is_key_pressed(KEY_D):
-		direction.x-=1
-		animations.travel("Walk")
-	elif Input.is_key_pressed(KEY_S):
-		direction.z-=1
-		animations.travel("Walk")
-	elif Input.is_key_pressed(KEY_W):
-		direction.z+=1
-		animations.travel("Walk")
-	else: 
+		speed = 3
+	else:
+		speed = 0
 		animations.travel("Idle")
 
-	if Input.is_action_pressed("ui_cancel"):
-		get_tree().quit()
-	direction=direction.normalized()
-	direction=direction*speed*delta
-	
-	direction=direction.normalized()
-	direction=direction*speed*delta
-	direction = direction.rotated(Vector3(0,1,0), rotation.y)
-
-	velocity.y+=gravity*delta
-	velocity.x=direction.x
-	velocity.z=direction.z
-
-	if velocity.y>0:
-		gravity=-20
+	if !is_on_floor():
+		y_velocity += gravity * delta
 	else:
-		gravity=-30
-
-	if is_on_floor() and Input.is_action_just_pressed("ui_accept"):
-		velocity.y = 7
-	velocity = move_and_slide(velocity,Vector3(0,1,0))
+		y_velocity = 0
+	
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
+	
+	mesh.rotation.y = lerp_angle(mesh.rotation.y, atan2(direction.x, direction.z), delta * angular_acceleration)
+	
+	velocity = lerp(velocity, speed * direction, delta * acceleration)
+	move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
 
 	if health == 0:
 		print("dead")
 
 	progress_bar.max_value = max_health
 	progress_bar.value = health
-
-	if Input.is_action_just_pressed("ui_switch"):
-		if T_P.current == true:
-			current_cam = F_P
-
-		elif F_P.current == true:
-			current_cam = F_T_P
-
-		elif F_T_P.current == true:
-			current_cam = T_P
-
-	if current_cam == F_P:
-		F_P.current = true
-		T_P.current = false
-		F_T_P.current = false
-
-	elif current_cam == T_P:
-		T_P.current = true
-		F_P.current = false
-		F_T_P.current = false
-
-	elif current_cam == F_T_P:
-		F_T_P.current = true
-		T_P.current = false
-		F_P.current = false
 
 func _input(event):
 	if event is InputEventMouseMotion:
