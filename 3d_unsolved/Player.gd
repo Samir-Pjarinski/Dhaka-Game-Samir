@@ -28,7 +28,6 @@ export var speed = 3
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	rof_timer.wait_time = millis_between_shots / 1000.0
-	muzzle.show()
 
 func _physics_process(delta):
 	if Input.is_action_pressed("forwards") or Input.is_action_pressed("backwards") or Input.is_action_pressed("left") or Input.is_action_pressed("right"):
@@ -48,6 +47,9 @@ func _physics_process(delta):
 	else:
 		y_velocity = 0
 	
+	if is_on_floor() and Input.is_action_pressed("jump"):
+				y_velocity = -8
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 	
@@ -62,7 +64,7 @@ func _physics_process(delta):
 		shoot(muzzle)
 
 	if health == 0:
-		print("dead")
+		pass
 
 	progress_bar.max_value = max_health
 	progress_bar.value = health
@@ -89,3 +91,6 @@ func shoot(loc):
 
 func _on_Timer_timeout():
 	can_shoot = true
+
+func El_values():
+	get_tree().call_group("Elevator", "rise", -0.26, 2.5)

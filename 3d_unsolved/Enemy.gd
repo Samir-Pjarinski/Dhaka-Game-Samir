@@ -21,11 +21,18 @@ var speed = 2
 var can_shoot = true
 var state = IDLE
 var target
+var direction = Vector3.ZERO
+var velocity = Vector3.ZERO
+var y_velocity = 0
+var gravity = 20
+var acceleration = 10
+var dying = false
+var timer = 10
 
 export(PackedScene) var Bullet
 export var muzzle_speed = 10
 export var millis_between_shots = 1000
-export var health = 20
+export var health = 2
 export var TURN_SPEED = 2 
 
 func _ready():
@@ -33,22 +40,22 @@ func _ready():
 
 func _process(delta):
 #	shoot($RayCast3/Muzzle)
-#	print(path.size())
+#	print(path)
 
 ## with sight range
 	match state:
 		ACTIVE:
 #			if path.size() < 8:
-			if current_node < path.size():
-				var direction: Vector3 = path[current_node] - global_transform.origin
+			if current_node < path.size() and dying == false:
+				direction = path[current_node] - global_transform.origin
 				if direction.length() < 1:
 					current_node += 1
 				else:
-		#			print("Dir: ", direction)
+#					print("Dir: ", direction)
 					move_and_slide(direction.normalized() * speed)
 		#			pass
 
-			if raycast.is_colliding():
+			if raycast.is_colliding() and dying == false:
 				var aim_at = raycast.get_collider()
 				if aim_at.is_in_group("Player"):
 					shoot($RayCast/Muzzle)
@@ -57,8 +64,25 @@ func _process(delta):
 			rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
 
 			if health == 0:
-				print("enemy died")
+				dying = true
+
+			if dying == true:
+				timer -= 0.1
+				$AnimationPlayer.play("Die")
+
+			if timer <= 0:
 				queue_free()
+
+			if !is_on_floor():
+				y_velocity += gravity * delta
+			else:
+				y_velocity = 0
+
+			velocity = lerp(velocity, speed * direction, delta * acceleration)
+			move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
+
+#			if path[0].y < -0.3:
+#				y_velocity = -8
 
 ## without site range
 #	if path.size() < 8:
@@ -120,3 +144,5 @@ func _on_Sight_Range_body_exited(body):
 	if body.is_in_group("Player"):
 		state = IDLE
 		print("exited")
+
+

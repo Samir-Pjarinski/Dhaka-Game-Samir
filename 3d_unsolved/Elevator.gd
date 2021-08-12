@@ -5,13 +5,15 @@ extends Spatial
 
 var move = 0.005
 var rise = false
+var ground
+var top
 
 func _ready():
 	pass
 
 func _process(delta):
 	if rise == true:
-		if translation.y < -0.26 or translation.y >= 2.5:
+		if translation.y < ground or translation.y >= top:
 			move*=-1
 #			print("rise")
 			print(translation.y, ",", move)
@@ -19,8 +21,8 @@ func _process(delta):
 
 func _on_Area_body_entered(body):
 	if body is KinematicBody:
-		rise = true
+		get_tree().call_group("Player", "El_values")
+		print("up")
 
-func _on_Area_body_exited(body):
-	if body is KinematicBody:
-		rise = false
+func rise(ground, top):
+	rise == true
