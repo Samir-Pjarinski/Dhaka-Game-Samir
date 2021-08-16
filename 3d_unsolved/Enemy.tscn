@@ -39,9 +39,10 @@ tracks/0/keys = {
 }
 
 [node name="Enemy" type="KinematicBody" groups=[
+"Damageable",
 "Enemy",
 ]]
-transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 2.373, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.373, 0 )
 script = ExtResource( 1 )
 Bullet = ExtResource( 2 )
 
@@ -64,7 +65,7 @@ enabled = true
 cast_to = Vector3( 0, -1, -200 )
 
 [node name="Muzzle" type="Position3D" parent="RayCast"]
-transform = Transform( -1, 0, -4.37114e-08, 0, 1, 0, 4.37114e-08, 0, -1, 1.25809, 0.505602, -0.270352 )
+transform = Transform( -1, 0, -4.37114e-08, 0, 1, 0, 4.37114e-08, 0, -1, 1.25809, 0.667192, 0.295029 )
 
 [node name="Timer2" type="Timer" parent="."]
 one_shot = true
@@ -82,7 +83,7 @@ shape = SubResource( 6 )
 [node name="Eyes" type="Spatial" parent="."]
 
 [node name="Gun" parent="." instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.25019, 0, -0.865603 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.25, 0, -0.45 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Die = SubResource( 7 )

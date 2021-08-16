@@ -8,6 +8,10 @@ onready var progress_bar = $ProgressBar
 onready var mesh = $character
 onready var rof_timer = $Timer
 onready var muzzle = $Muzzle
+onready var C4_place = $character/character/C4
+onready var label = $Label
+onready var raycast = $camera_root/camera_h/camera_v/RayCast
+onready var PickupRadius = $PickupRadius
 
 var direction = Vector3.FORWARD
 var velocity = Vector3.ZERO
@@ -17,10 +21,13 @@ var mouse = 0.09
 var angular_acceleration = 7
 var acceleration = 10
 var can_shoot = true
+var selected = "empty"
 
 export(PackedScene) var Bullet
+export(PackedScene) var C_4
 export var muzzle_speed = 10
 export var millis_between_shots = 1000
+export var total_C4 = 10
 export var health = 20
 export var max_health = 20
 export var speed = 3
@@ -59,15 +66,43 @@ func _physics_process(delta):
 	move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
 
 	muzzle.rotation_degrees.y = mesh.rotation_degrees.y
+	PickupRadius.rotation_degrees.y = mesh.rotation_degrees.y
 
 	if Input.is_action_pressed("shoot"):
-		shoot(muzzle)
+		if selected == "gun":
+			shoot(muzzle)
+		elif selected == "trigger":
+			get_tree().call_group("bomb", "triggered")
+	if Input.is_action_just_pressed("shoot"):
+		if selected == "C4":
+			throw_C4(C4_place)
 
 	if health == 0:
 		pass
 
 	progress_bar.max_value = max_health
 	progress_bar.value = health
+
+	if Input.is_key_pressed(KEY_1):
+		selected = "empty"
+	elif Input.is_key_pressed(KEY_2):
+		selected = "gun"
+	elif Input.is_key_pressed(KEY_3):
+		selected = "C4"
+	elif Input.is_key_pressed(KEY_4):
+		selected = "trigger"
+	
+	label.set_text(selected)
+
+	if Input.is_action_just_pressed("ui_use"):
+		if selected == "C4":
+			var bodies = PickupRadius.get_overlapping_bodies()
+			for b in bodies:
+				if b.is_in_group("bomb"):
+						b.queue_free()
+						total_C4 += 1
+
+	print(total_C4)
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -88,6 +123,13 @@ func shoot(loc):
 		can_shoot = false
 		rof_timer.start()
 
+func throw_C4(loc):
+	if total_C4 > 0:
+		var C4 = C_4.instance()
+		C4.global_transform = loc.global_transform
+		var scene_root = get_tree().get_root().get_children()[0]
+		scene_root.add_child(C4)
+		total_C4 -= 1
 
 func _on_Timer_timeout():
 	can_shoot = true

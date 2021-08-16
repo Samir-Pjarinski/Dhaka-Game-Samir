@@ -39,47 +39,46 @@ func _ready():
 	rof_timer.wait_time = millis_between_shots / 1000.0
 
 func _process(delta):
-#	shoot($RayCast3/Muzzle)
-#	print(path)
+#	print(health)
 
 ## with sight range
 	match state:
 		ACTIVE:
-#			if path.size() < 8:
-			if current_node < path.size() and dying == false:
-				direction = path[current_node] - global_transform.origin
-				if direction.length() < 1:
-					current_node += 1
+			if path.size() > 1:
+				if current_node < path.size() and dying == false:
+					direction = path[current_node] - global_transform.origin
+					if direction.length() < 1:
+						current_node += 1
+					else:
+	#					print("Dir: ", direction)
+						move_and_slide(direction.normalized() * speed)
+			#			pass
+
+				if raycast.is_colliding() and dying == false:
+					var aim_at = raycast.get_collider()
+					if aim_at.is_in_group("Player"):
+						shoot($RayCast/Muzzle)
+
+				eyes.look_at(player.global_transform.origin, Vector3.UP)
+				rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
+
+				if health <= 0:
+					dying = true
+
+				if dying == true:
+					timer -= 0.1
+					$AnimationPlayer.play("Die")
+
+				if timer <= 0:
+					queue_free()
+
+				if !is_on_floor():
+					y_velocity += gravity * delta
 				else:
-#					print("Dir: ", direction)
-					move_and_slide(direction.normalized() * speed)
-		#			pass
+					y_velocity = 0
 
-			if raycast.is_colliding() and dying == false:
-				var aim_at = raycast.get_collider()
-				if aim_at.is_in_group("Player"):
-					shoot($RayCast/Muzzle)
-
-			eyes.look_at(player.global_transform.origin, Vector3.UP)
-			rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
-
-			if health == 0:
-				dying = true
-
-			if dying == true:
-				timer -= 0.1
-				$AnimationPlayer.play("Die")
-
-			if timer <= 0:
-				queue_free()
-
-			if !is_on_floor():
-				y_velocity += gravity * delta
-			else:
-				y_velocity = 0
-
-			velocity = lerp(velocity, speed * direction, delta * acceleration)
-			move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
+				velocity = lerp(velocity, speed * direction, delta * acceleration)
+				move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
 
 #			if path[0].y < -0.3:
 #				y_velocity = -8
