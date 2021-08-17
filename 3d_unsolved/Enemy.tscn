@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Bullet.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Gun.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
 mid_height = 3.0
@@ -60,12 +59,9 @@ wait_time = 0.25
 autostart = true
 
 [node name="RayCast" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0148 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25489 )
 enabled = true
 cast_to = Vector3( 0, -1, -200 )
-
-[node name="Muzzle" type="Position3D" parent="RayCast"]
-transform = Transform( -1, 0, -4.37114e-08, 0, 1, 0, 4.37114e-08, 0, -1, 1.25809, 0.667192, 0.295029 )
 
 [node name="Timer2" type="Timer" parent="."]
 one_shot = true
@@ -82,13 +78,14 @@ shape = SubResource( 6 )
 
 [node name="Eyes" type="Spatial" parent="."]
 
-[node name="Gun" parent="." instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.25, 0, -0.45 )
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Die = SubResource( 7 )
+
+[node name="Muzzle" type="Position3D" parent="."]
+transform = Transform( -1, 0, -4.37114e-08, 0, 1, 0, 4.37114e-08, 0, -1, 0.136423, 0.423629, -2.00787 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
 [connection signal="body_entered" from="Sight_Range" to="." method="_on_Sight_Range_body_entered"]
 [connection signal="body_exited" from="Sight_Range" to="." method="_on_Sight_Range_body_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

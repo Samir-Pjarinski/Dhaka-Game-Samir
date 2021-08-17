@@ -1,7 +1,5 @@
 extends KinematicBody
-
-## Todo - 
-## Find a way to make the enemy jump (Gravity)
+#Samir
 
 enum{
 	IDLE
@@ -17,22 +15,21 @@ onready var gun = $Gun
 
 var path = []
 var current_node = 0
-var speed = 2
+var speed = 1
 var can_shoot = true
 var state = IDLE
-var target
 var direction = Vector3.ZERO
 var velocity = Vector3.ZERO
 var y_velocity = 0
 var gravity = 20
 var acceleration = 10
 var dying = false
-var timer = 10
 
 export(PackedScene) var Bullet
 export var muzzle_speed = 10
-export var millis_between_shots = 1000
-export var health = 2
+export var millis_between_shots = 2500
+export var health = 10
+export var max_health = 10
 export var TURN_SPEED = 2 
 
 func _ready():
@@ -44,7 +41,7 @@ func _process(delta):
 ## with sight range
 	match state:
 		ACTIVE:
-			if path.size() > 1:
+			if path.size() >= 2:
 				if current_node < path.size() and dying == false:
 					direction = path[current_node] - global_transform.origin
 					if direction.length() < 1:
@@ -54,57 +51,25 @@ func _process(delta):
 						move_and_slide(direction.normalized() * speed)
 			#			pass
 
-				if raycast.is_colliding() and dying == false:
-					var aim_at = raycast.get_collider()
-					if aim_at.is_in_group("Player"):
-						shoot($RayCast/Muzzle)
+			if raycast.is_colliding() and dying == false:
+				var aim_at = raycast.get_collider()
+				if aim_at.is_in_group("Player"):
+					shoot($Muzzle)
 
-				eyes.look_at(player.global_transform.origin, Vector3.UP)
-				rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
+			eyes.look_at(player.global_transform.origin, Vector3.UP)
+			rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
 
-				if health <= 0:
-					dying = true
+			if health <= 0:
+				dying = true
+				$AnimationPlayer.play("Die")
 
-				if dying == true:
-					timer -= 0.1
-					$AnimationPlayer.play("Die")
+			if !is_on_floor():
+				y_velocity += gravity * delta
+			else:
+				y_velocity = 0
 
-				if timer <= 0:
-					queue_free()
-
-				if !is_on_floor():
-					y_velocity += gravity * delta
-				else:
-					y_velocity = 0
-
-				velocity = lerp(velocity, speed * direction, delta * acceleration)
-				move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
-
-#			if path[0].y < -0.3:
-#				y_velocity = -8
-
-## without site range
-#	if path.size() < 8:
-#		if current_node < path.size():
-#			var direction: Vector3 = path[current_node] - global_transform.origin
-#			if direction.length() < 1:
-#				current_node += 1
-#			else:
-#		#		print("Dir: ", direction)
-#				move_and_slide(direction.normalized() * speed)
-#		#		pass
-#
-#		if raycast.is_colliding():
-#			var aim_at = raycast.get_collider()
-#			if aim_at.is_in_group("Player"):
-#				shoot($RayCast/Muzzle)
-#
-#			eyes.look_at(player.global_transform.origin, Vector3.UP)
-#			rotate_y(deg2rad(eyes.rotation.y * TURN_SPEED))
-
-#			if health == 0:
-#				print("enemy died")
-#				queue_free()
+			velocity = lerp(velocity, speed * direction, delta * acceleration)
+			move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
 
 func update_path(target_point):
 	path = nav.get_simple_path(global_transform.origin, target_point)
@@ -118,13 +83,13 @@ func shoot(loc):
 	if can_shoot:
 		var bullet = Bullet.instance()
 		bullet.global_transform = loc.global_transform
-		bullet.bullet_speed = muzzle_speed
+#		bullet.bullet_speed = muzzle_speed
 		var scene_root = get_parent().get_parent()
 		scene_root.add_child(bullet)
 #		print("pew")
 		can_shoot = false
 		rof_timer.start()
-		gun.ap.play("shoot")
+#		gun.ap.play("shoot")
 
 func minus_health(damage):
 	health = health - damage
@@ -144,4 +109,11 @@ func _on_Sight_Range_body_exited(body):
 		state = IDLE
 		print("exited")
 
+func _on_AnimationPlayer_animation_finished(anim_name):
+	queue_free()
 
+func moveable():
+	speed = 1
+
+func unmoveable():
+	speed = 0

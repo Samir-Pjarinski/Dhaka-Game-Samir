@@ -1,14 +1,16 @@
 extends Spatial
+#Samir
 
 var timer = 0 
 
-export var bullet_speed = 10
-export var bullet_damage = 1
+export var bullet_speed = 0
+export var bullet_damage = 0.5
 
 const Kill_Time = 10
 
 func _ready():
-	pass
+	$AnimationPlayer.play("grow")
+	get_tree().call_group("Enemy", "unmoveable")
 
 func _physics_process(delta):
 	var forward_direction = global_transform.basis.z.normalized()
@@ -26,3 +28,10 @@ func _on_Area_body_entered(body):
 			get_tree().call_group("Player","minus_health", bullet_damage)
 			queue_free()
 #			print("die")
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "grow":
+		bullet_speed = 10
+		bullet_damage = 1
+		get_tree().call_group("Enemy", "moveable")

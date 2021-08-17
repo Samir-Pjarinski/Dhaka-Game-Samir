@@ -1,7 +1,5 @@
 extends Spatial
-
-## Todo - 
-## Fix
+#Samir
 
 var move = 0.005
 var rise = false

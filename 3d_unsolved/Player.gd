@@ -1,13 +1,12 @@
 extends KinematicBody
-
-## Todo-
-## Add player projectiles - no gun
+#Samir
 
 onready var animations = $character/AnimationTree.get("parameters/playback")
 onready var progress_bar = $ProgressBar
+onready var fireball_reload = $ProgressBar2
 onready var mesh = $character
 onready var rof_timer = $Timer
-onready var muzzle = $Muzzle
+onready var muzzle = $character/character/Muzzle
 onready var C4_place = $character/character/C4
 onready var label = $Label
 onready var raycast = $camera_root/camera_h/camera_v/RayCast
@@ -26,7 +25,7 @@ var selected = "empty"
 export(PackedScene) var Bullet
 export(PackedScene) var C_4
 export var muzzle_speed = 10
-export var millis_between_shots = 1000
+export var seconds_between_shots = 10
 export var total_C4 = 10
 export var health = 20
 export var max_health = 20
@@ -34,8 +33,9 @@ export var speed = 3
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	rof_timer.wait_time = millis_between_shots / 1000.0
+	rof_timer.wait_time = seconds_between_shots 
 
+#Rashad
 func _physics_process(delta):
 	if Input.is_action_pressed("forwards") or Input.is_action_pressed("backwards") or Input.is_action_pressed("left") or Input.is_action_pressed("right"):
 		var camera_rotation = $camera_root/camera_h.global_transform.basis.get_euler().y
@@ -65,11 +65,11 @@ func _physics_process(delta):
 	velocity = lerp(velocity, speed * direction, delta * acceleration)
 	move_and_slide(velocity + Vector3.DOWN * y_velocity, Vector3.UP)
 
-	muzzle.rotation_degrees.y = mesh.rotation_degrees.y
+#Samir
 	PickupRadius.rotation_degrees.y = mesh.rotation_degrees.y
 
 	if Input.is_action_pressed("shoot"):
-		if selected == "gun":
+		if selected == "fireball":
 			shoot(muzzle)
 		elif selected == "trigger":
 			get_tree().call_group("bomb", "triggered")
@@ -83,16 +83,22 @@ func _physics_process(delta):
 	progress_bar.max_value = max_health
 	progress_bar.value = health
 
+	fireball_reload.max_value = seconds_between_shots
+	fireball_reload.value = rof_timer.time_left
+
 	if Input.is_key_pressed(KEY_1):
 		selected = "empty"
 	elif Input.is_key_pressed(KEY_2):
-		selected = "gun"
+		selected = "fireball"
 	elif Input.is_key_pressed(KEY_3):
 		selected = "C4"
 	elif Input.is_key_pressed(KEY_4):
 		selected = "trigger"
-	
-	label.set_text(selected)
+
+	if selected == "C4":
+		label.set_text(selected + ',' + str(total_C4))
+	else:
+		label.set_text(selected)
 
 	if Input.is_action_just_pressed("ui_use"):
 		if selected == "C4":
@@ -102,7 +108,7 @@ func _physics_process(delta):
 						b.queue_free()
 						total_C4 += 1
 
-	print(total_C4)
+	print(health)
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -116,7 +122,7 @@ func shoot(loc):
 	if can_shoot:
 		var bullet = Bullet.instance()
 		bullet.global_transform = loc.global_transform
-		bullet.bullet_speed = muzzle_speed
+#		bullet.bullet_speed = muzzle_speed
 		var scene_root = get_tree().get_root().get_children()[0]
 		scene_root.add_child(bullet)
 #		print("pew")
@@ -136,3 +142,9 @@ func _on_Timer_timeout():
 
 func El_values():
 	get_tree().call_group("Elevator", "rise", -0.26, 2.5)
+
+func moveable():
+	pass
+
+func unmoveable():
+	pass

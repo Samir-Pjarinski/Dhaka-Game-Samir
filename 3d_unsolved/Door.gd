@@ -1,4 +1,5 @@
 extends Area
+#Samir
 
 var areaDoorEntered = false
 var doorOpened = false
