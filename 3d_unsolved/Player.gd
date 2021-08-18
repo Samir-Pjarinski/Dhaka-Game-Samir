@@ -11,6 +11,7 @@ onready var C4_place = $character/character/C4
 onready var label = $Label
 onready var raycast = $camera_root/camera_h/camera_v/RayCast
 onready var PickupRadius = $PickupRadius
+onready var fireball_label = $Label2
 
 var direction = Vector3.FORWARD
 var velocity = Vector3.ZERO
@@ -68,7 +69,7 @@ func _physics_process(delta):
 #Samir
 	PickupRadius.rotation_degrees.y = mesh.rotation_degrees.y
 
-	if Input.is_action_pressed("shoot"):
+	if Input.is_action_pressed("fireball_shoot"):
 		if selected == "fireball":
 			shoot(muzzle)
 		elif selected == "trigger":
@@ -83,8 +84,20 @@ func _physics_process(delta):
 	progress_bar.max_value = max_health
 	progress_bar.value = health
 
+	if selected == "fireball":
+		fireball_reload.show()
+	else:
+		fireball_reload.hide()
+
 	fireball_reload.max_value = seconds_between_shots
-	fireball_reload.value = rof_timer.time_left
+	fireball_reload.value = 10 - rof_timer.time_left
+
+	print(10 - rof_timer.time_left, seconds_between_shots)
+
+	if rof_timer.time_left == 0 and selected == "fireball":
+		fireball_label.show()
+	else:
+		fireball_label.hide()
 
 	if Input.is_key_pressed(KEY_1):
 		selected = "empty"
@@ -139,12 +152,3 @@ func throw_C4(loc):
 
 func _on_Timer_timeout():
 	can_shoot = true
-
-func El_values():
-	get_tree().call_group("Elevator", "rise", -0.26, 2.5)
-
-func moveable():
-	pass
-
-func unmoveable():
-	pass

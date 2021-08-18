@@ -10,7 +10,6 @@ const Kill_Time = 10
 
 func _ready():
 	$AnimationPlayer.play("grow")
-	get_tree().call_group("Player", "unmoveable")
 
 func _physics_process(delta):
 	var forward_direction = global_transform.basis.z.normalized()
@@ -36,4 +35,3 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "grow":
 		bullet_speed = 10
 		bullet_damage = 1
-		get_tree().call_group("Player", "moveable")

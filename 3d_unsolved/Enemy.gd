@@ -27,13 +27,13 @@ var dying = false
 
 export(PackedScene) var Bullet
 export var muzzle_speed = 10
-export var millis_between_shots = 2500
+export var seconds_between_shots = 10
 export var health = 10
 export var max_health = 10
 export var TURN_SPEED = 2 
 
 func _ready():
-	rof_timer.wait_time = millis_between_shots / 1000.0
+	rof_timer.wait_time = seconds_between_shots 
 
 func _process(delta):
 #	print(health)

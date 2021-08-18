@@ -1,15 +1,15 @@
 [gd_resource type="Theme" load_steps=3 format=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.101961, 1, 0, 1 )
+bg_color = Color( 1, 0, 0, 0 )
 border_width_left = 10
 border_width_top = 10
-border_width_right = 10
+border_width_right = 11
 border_width_bottom = 10
-border_color = Color( 1, 1, 1, 0 )
+border_color = Color( 1, 1, 1, 1 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 1, 0, 0, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
