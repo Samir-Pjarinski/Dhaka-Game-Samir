@@ -17,7 +17,6 @@ var direction = Vector3.FORWARD
 var velocity = Vector3.ZERO
 var y_velocity = 0
 var gravity = 20
-var mouse = 0.09
 var angular_acceleration = 7
 var acceleration = 10
 var can_shoot = true
@@ -72,11 +71,11 @@ func _physics_process(delta):
 	if Input.is_action_pressed("fireball_shoot"):
 		if selected == "fireball":
 			shoot(muzzle)
-		elif selected == "trigger":
-			get_tree().call_group("bomb", "triggered")
 	if Input.is_action_just_pressed("shoot"):
 		if selected == "C4":
 			throw_C4(C4_place)
+		elif selected == "trigger":
+			get_tree().call_group("bomb", "triggered")
 
 	if health == 0:
 		pass
@@ -122,10 +121,6 @@ func _physics_process(delta):
 						total_C4 += 1
 
 	print(health)
-
-func _input(event):
-	if event is InputEventMouseMotion:
-		$'.'.rotation_degrees.y += (event.relative.x * mouse)
 
 func minus_health(damage):
 	health = health - damage
