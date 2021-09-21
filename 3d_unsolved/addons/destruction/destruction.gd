@@ -1,0 +1,40 @@
+tool
+extends Node
+#areebah + rashad
+
+export var shard_template : PackedScene = preload("res://addons/destruction/ShardTemplates/DefaultShardTemplate.tscn")
+export var shard_scene : PackedScene
+export var shard_container := @"../../" setget set_shard_container
+
+const DestructionUtils = preload("res://addons/destruction/DestructionUtils.gd")
+
+#areebah
+func destroy() -> void:
+	var shards := DestructionUtils.create_shards(shard_scene.instance(), shard_template)
+	get_node(shard_container).add_child(shards)
+	shards.global_transform.origin = get_parent().global_transform.origin
+	print("destroyed")
+	get_parent().queue_free()
+
+func set_shard_container(to : NodePath) -> void:
+	shard_container = to
+	update_configuration_warning()
+
+func _notification(what : int) -> void:
+	if what == NOTIFICATION_PATH_CHANGED:
+		update_configuration_warning()
+
+func _get_configuration_warning() -> String:
+	return "The shard container is a PhysicsBody or has a PhysicsBody as a parent. This will make the shards added to it behave in unexpected ways." if get_node(shard_container) is PhysicsBody or _has_parent_of_type(get_node(shard_container), PhysicsBody) else ""
+
+static func _has_parent_of_type(node : Node, type) -> bool:
+	if not node.get_parent():
+		return false
+	if node.get_parent() is type:
+		return true
+	return _has_parent_of_type(node.get_parent(), type)
+
+#rashad
+func _on_hitbox_body_entered(body):
+	if body.name == "Player":
+		destroy()

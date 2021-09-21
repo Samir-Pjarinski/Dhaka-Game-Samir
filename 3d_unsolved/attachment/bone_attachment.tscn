@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://attachment/blasterA.obj" type="ArrayMesh" id=1]
+
+[node name="BoneAttachment" type="BoneAttachment"]
+transform = Transform( 0.584712, -0.273758, 0.763653, 0.767423, 0.491841, -0.411281, -0.263006, 0.826525, 0.497677, 0.276142, 0.375647, -0.74161 )
+bone_name = "mixamorig_left_hand_index_4"
+
+[node name="gun" type="MeshInstance" parent="."]
+transform = Transform( -0.395978, 0.297179, -0.0699008, 0.0648605, -0.0299764, -0.494869, -0.298319, -0.400981, -0.0148105, -0.00906152, 0.209074, -0.0360529 )
+mesh = ExtResource( 1 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null

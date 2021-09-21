@@ -1,0 +1,188 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://breaking/cube break.glb" type="PackedScene" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+
+[node name="cube break" instance=ExtResource( 1 )]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+
+[node name="Cube_cell" parent="." index="0"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell001" parent="." index="1"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell002" parent="." index="2"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell003" parent="." index="3"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell004" parent="." index="4"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell005" parent="." index="5"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell006" parent="." index="6"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell007" parent="." index="7"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell008" parent="." index="8"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell009" parent="." index="9"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell010" parent="." index="10"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell011" parent="." index="11"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell012" parent="." index="12"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell013" parent="." index="13"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell014" parent="." index="14"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell015" parent="." index="15"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell016" parent="." index="16"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell017" parent="." index="17"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell018" parent="." index="18"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell019" parent="." index="19"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell020" parent="." index="20"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell021" parent="." index="21"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell022" parent="." index="22"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell023" parent="." index="23"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell024" parent="." index="24"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell025" parent="." index="25"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell026" parent="." index="26"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell027" parent="." index="27"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell028" parent="." index="28"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell029" parent="." index="29"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell030" parent="." index="30"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell031" parent="." index="31"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell032" parent="." index="32"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell033" parent="." index="33"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell034" parent="." index="34"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell035" parent="." index="35"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell036" parent="." index="36"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell037" parent="." index="37"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell038" parent="." index="38"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell039" parent="." index="39"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell040" parent="." index="40"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell041" parent="." index="41"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell042" parent="." index="42"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell043" parent="." index="43"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell044" parent="." index="44"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell045" parent="." index="45"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell046" parent="." index="46"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell047" parent="." index="47"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell048" parent="." index="48"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell049" parent="." index="49"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell050" parent="." index="50"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell051" parent="." index="51"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell052" parent="." index="52"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell053" parent="." index="53"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell054" parent="." index="54"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell055" parent="." index="55"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell056" parent="." index="56"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell057" parent="." index="57"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell058" parent="." index="58"]
+material_override = SubResource( 1 )
+
+[node name="Cube_cell059" parent="." index="59"]
+material_override = SubResource( 1 )
